@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
@@ -55,39 +56,27 @@ fun VideoView(videoData: VideoData, showLikes: Boolean){
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(4.dp, Brush.horizontalGradient(listOf(Color(0xFF0000ff), Color(0xFF00ff00))))
             ) {
-                if (videoData.isYoutube){
-                    Image(
-                        painter = painter,
-                        contentDescription = "loading",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clickable(
-                                enabled = true,
-                                onClickLabel = "Play Video",
-                                onClick = {
-                                    val intent = Intent(context, Video::class.java)
-                                    intent.putExtra("videoId", videoData.videoID)
-                                    context.startActivity(intent)
-                                }
-                            )
-                    )
-                }
-                else {
-                    Image(
-                        painter = painter,
-                        contentDescription = "loading",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp)
-                            .clickable(
-                                enabled = true,
-                                onClickLabel = "Play Video",
-                                onClick = {
-                                    uriHandler.openUri("https://drive.google.com/file/d/${videoData.videoID}/view")
-                                }
-                            )
-                    )
-                }
+                val onClick = if (videoData.isYoutube) ({
+                    val intent = Intent(context, Video::class.java)
+                    intent.putExtra("videoId", videoData.videoID)
+                    context.startActivity(intent)
+                })
+                else ({
+                    uriHandler.openUri("https://drive.google.com/file/d/${videoData.videoID}/view")
+                })
+
+                Image(
+                    painter = painter,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "loading",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            enabled = true,
+                            onClickLabel = "Play Video",
+                            onClick = onClick
+                        )
+                )
             }
             videoData.videoName?.let {
                 Text(
