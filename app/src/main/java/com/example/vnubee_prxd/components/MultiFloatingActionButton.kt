@@ -82,7 +82,7 @@ fun MultiFloatingActionButton(
         ) {
             Canvas(
                 modifier = Modifier
-                    .size(56.dp)
+                    .size(59.dp)
             ) {
                 drawImage(
                     icon,

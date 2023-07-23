@@ -16,13 +16,18 @@
         <activity
             android:name=".composables.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Vnubee_Prxd">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".components.Video"
+            android:exported="true"
+            android:theme="@style/Theme.Vnubee_Prxd.NoActionBar">
         </activity>
     </application>
 

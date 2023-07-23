@@ -2,4 +2,9 @@
 <resources>
 
     <style name="Theme.Vnubee_Prxd" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Vnubee_Prxd.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>
