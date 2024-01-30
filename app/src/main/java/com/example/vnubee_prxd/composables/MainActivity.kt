@@ -5,13 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.vnubee_prxd.components.AppBar
 import com.example.vnubee_prxd.components.MultiFloatingActionButton
 import com.example.vnubee_prxd.components.Navigation
 import com.example.vnubee_prxd.datatypes.FabIcon
@@ -21,6 +29,7 @@ import com.example.vnubee_prxd.datatypes.SettingsOptions
 import com.example.vnubee_prxd.ui.theme.VnubeePrxdTheme
 import com.example.vnubee_prxd.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 //TODO: make tutorial that can be skipped
 
@@ -43,13 +52,23 @@ class MainActivity : ComponentActivity(){
             val vidList = viewModel.vidMap[currPlaylist]
             val navController = rememberNavController()
             val settings = viewModel.settings.collectAsState(initial = SettingsOptions())
-
+            val scope = rememberCoroutineScope()
+            val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             VnubeePrxdTheme {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Scaffold(
-                        topBar = {
-
+                        topBar ={
+                            AppBar(
+                                onNavigationIconClick = {
+                                    scope.launch {
+                                        drawerState.apply {
+                                            if (isClosed) open() else close()
+                                        }
+                                    }
+                                }
+                            )
                         },
+
                         floatingActionButton = {
                             MultiFloatingActionButton(
                                 selectedItem = MultiFabItem(
